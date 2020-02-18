@@ -14,6 +14,9 @@ Cette page devrait contenir les tests des méthodes
 include_once("../src/Auto.php");
 include_once("../src/donnees.inc.php");
 /*LIGNE DE TEST*/
-echo Auto::titre('Ford', 'Fiesta', 'strong');
+//echo Auto::image('Ford', 'Fiesta', 'voiture');
+//echo Auto::trouverModele('Ford', 'Fiesta', 'voiture');
+// echo Auto::ariane('Ford', 'Fiesta');
+echo Auto::lien('Nissan', 'Versa');
 // ... CONTINUER ...
 ?>
