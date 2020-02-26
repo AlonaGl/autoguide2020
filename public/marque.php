@@ -3,7 +3,7 @@
 =========================================================================
 Intégration web III - TP1
 -------------------------------------------------------------------------
-Votre nom :
+Votre nom :	Alona Golubyeva
 -------------------------------------------------------------------------
 Cette page affiche la liste des modèles en fonction de la marque fournie dans l'adresse
 - Inclure le fichier de la class Auto
@@ -25,41 +25,27 @@ Cette page affiche la liste des modèles en fonction de la marque fournie dans l
 	<meta charset="UTF-8" />
 	<link rel="stylesheet" href="css/autoguide.css" />
 	<!-- /* Faire afficher le nom de la marque dans le title; */ -->
-	<title>Ford</title>
+	<?php echo Auto::titre(); ?>
 </head>
 
 <body>
 	<div class="interface">
 		<!-- /* Inclure le header ici */ -->
-		<header>
-			<h1><a href="index.php">AutoGuide.qc</a></h1>
-		</header>
+		<?php include_once("../components/header.php"); ?>
 		<!-- /* Faire afficher le fil d'Ariane ici; */ -->
-		<nav id="ariane">
-			<ul>
-				<li><a href="index.php">Accueil</a></li>
-				<li><span>Ferrari </span></li>
-			</ul>
-		</nav>
+		<?php echo Auto::ariane(); ?>
 		<section class="body">
 			<article>
 				<header>
 					<!-- /* Faire afficher le nom de la marque dans le h1; */ -->
-					<h1>Ferrari</h1>
+					<?php echo Auto::titre(); ?>
 				</header>
 				<!-- /* Faire afficher la liste de modèles ici; */ -->
-				<ul class="listeModeles">
-					<li><a href="modele.php?nomMarque=Ferrari&amp;nomModele=California"><img class="tb"
-								src="images/voitures/ferrari_california_tb.jpg" alt="Ferrari California"
-								title="Ferrari California" /><span>California</span></a></li>
-				</ul>
+				<?php echo Auto::listeModeles(); ?>
 			</article>
 		</section>
 		<!-- /* Inclure le footer ici */ -->
-		<footer>
-			&copy; 2020 - Travail fait dans le cadre du cours <cite>Intégration Web III</cite>
-		</footer>
-
+		<?php include_once("../components/footer.php"); ?>
 	</div>
 </body>
 
