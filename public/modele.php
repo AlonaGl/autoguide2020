@@ -37,6 +37,7 @@ include_once("../src/donnees.inc.php");
 			<h1><a href="index.php">AutoGuide.qc</a></h1>
 		</header>
 		<!-- /* Faire afficher le fil d'Ariane ici; */ -->
+		<?php echo Auto::ariane(); ?>
 		<nav id="ariane">
 			<ul>
 				<li><a href="index.php">Accueil</a></li>
