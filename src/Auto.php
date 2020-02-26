@@ -1,4 +1,5 @@
 <?php
+include_once("donnees.inc.php");
 /*
 =========================================================================
 Intégration web III - TP1
@@ -45,11 +46,13 @@ class Auto {
 	 * @return array - Le array du modele ou false
 	 */
 	static public function trouverModele($autos, $nomMarque, $nomModele){
-		if($nomMarque) {
-			$resultat = $autos[$nomMarque][$nomModele];
-		}else {
+		if (!isset($autos[$nomMarque])){
 			return false;
 		}
+		if (!isset($autos[$nomMarque][$nomModele])) {
+			return false;
+		}
+		$resultat = $autos[$nomMarque][$nomModele];
 		return $resultat;
 	}
 
@@ -64,11 +67,20 @@ class Auto {
 	 */
 	static public function ariane($nomMarque="", $nomModele=""){
 		$resultat = '';
-		$resultat .= '<li><span>Accueil</span></li>';
-		if($nomMarque){
-			$resultat .= '<li><span>'.$nomMarque.'</span></li>';
+		$resultat .= '<nav id="ariane">';
+		$resultat .= '<ul>';
+		if($nomMarque & $nomModele){
+			$resultat .= '<li><a href="index.php">Accueil</a></li>';
+			$resultat .= '<li><a href="marque.php?nomMarque='.$nomMarque.'">'.$nomMarque.'</a></li>';
 			$resultat .= '<li><span>'.$nomModele.'</span></li>';
+		}else if($nomMarque){
+			$resultat .= '<li><a href="index.php">Accueil</a></li>';
+			$resultat .= '<li><span>'.$nomMarque.'</span></li>';
+		}else{
+			$resultat .= '<li><span>Accueil</span></li>';
 		}
+		$resultat .= '</ul>';
+		$resultat .= '</nav>';
 		return $resultat;
 	}
 
@@ -77,10 +89,13 @@ class Auto {
 	 * qui permet d'afficher les détails d'une voiture
 	 * @param string $nomMarque - La marque de voiture
 	 * @param string $nomModele - Le modele de voiture
-	 * @return string - Le HTML dw la balise <a>
+	 * @return string - Le HTML de la balise <a>
 	 */
 	static public function lien($nomMarque, $nomModele){
-			$resultat = '<a href="modele.php?nomMarque='.$nomMarque.'&amp;nomModele='.$nomModele.'">';
+			$resultat = '';
+			$resultat .= '<li><a href="modele.php?nomMarque='.$nomMarque.'&amp;nomModele='.$nomModele.'">';
+			$resultat .= self::image($nomMarque, $nomModele, $class="voiture");
+			$resultat .= '<span>'.$nomModele.'</span></a></li>';
 			return $resultat;
 	}
 
@@ -106,15 +121,19 @@ class Auto {
 	 * @param array $autos - Le array contenant les autos
 	 * @return string - Le HTML du div "listeMarques"
 	 */
+
 	static public function listeMarques($autos){
 		$resultat = '';
 		$resultat .= '<ul class="listeMarques">';
-		$resultat .= '<li><a href="marque.php?nomMarque='.$nomMarque.'">'.$nomMarque.'</a>';
+		foreach ($autos as $auto) {
+			array_unshift($nomMarque, $autosMarque);
+			$resultat .= '<li><a href="marque.php?nomMarque='.$nomMarque.'">'.$nomMarque.'</a>';
+			$resultat .= self::listeModeles($nomMarque, $autosMarque);
+		}
 		$resultat .= '</li>';
 		$resultat .= '</ul>';
 		return $resultat;
 	}
-
 
 	 /** Méthode "listeModeles" qui retourne le HTML du ul "listeModeles"
 	 * contenant la liste des voitures (voir maquette, page index.php) en fonction des paramètres
@@ -125,12 +144,14 @@ class Auto {
 	static public function listeModeles($nomMarque, $autosMarque){
 			$resultat = '';
 			$resultat .= '<ul class="listeModeles">';
-			$resultat .= '<li><a href="modele.php?nomMarque='.$nomMarque.'&amp;nomModele='.$nomModele.'"><img class="tb"';
-			$resultat .= 'src="images/voitures/'.$nomMarque.'_'.$nomModele.'_tb.jpg" alt="'.$nomMarque.' '.$nomModele.'"';
-			$resultat .= 'title="'.$nomMarque.' '.$nomModele.'" /><span>'.$nomModele.'</span></a></li>';
+			foreach ($autosMarque[$nomMarque] as $autoMarque) {
+				array_unshift($nomModele);
+				$resultat .= self::lien($nomMarque, $nomModele);
+			}
 			$resultat .= '</ul>';
 			return $resultat;
 	}
+
 
 
 	/**	Méthode "ligne" qui retourne une ligne (<tr>) du tableau des caractéristiques
@@ -140,10 +161,12 @@ class Auto {
 	 * @param string - Le HTML du tr
 	 */
 	static public function ligne($etiquette, $contenu){
+			$resultat = '';
 			$resultat .= '<tr>';
 			$resultat .= '<td class="etiquette">'.$etiquette.' : </td>';
-			$resultat .= '<td>'.$contenue.'</td>';
+			$resultat .= '<td>'.$contenu.'</td>';
 			$resultat .= '</tr>';
+			return $resultat;
 	}
 
 
@@ -153,10 +176,10 @@ class Auto {
 	 * @param array $voiture - Le array représentant la voiture (un modèle)
 	 * @param string - Le HTML du tr
 	 */
-	static public function ligne_puissance($voiture){
+	static public function ligne_puissance($voiture, $nomMarque, $nomModele){
 		$resultat = '';
-		foreach ($voiture as $voiture){
-			$resultat .= self::ligne($etiquette, $contenu);
+		foreach ($voiture[$nomMarque][$nomModele]['puissance'] as $key => $valeur){
+			$resultat .= self::ligne($key, $valeur);
 		}
 		return $resultat;
 	}
@@ -169,7 +192,11 @@ class Auto {
 	 * @param string - Le HTML du tr
 	 */
 	static public function ligne_couple($voiture){
-		
+		$resultat = '';
+		foreach ($voiture[$nomMarque][$nomModele]['couple'] as $key => $valeur){
+			$resultat .= self::ligne($key, $valeur);
+		}
+		return $resultat;
 	}
 
 
@@ -179,7 +206,11 @@ class Auto {
 	 * @return string - Le HTML du tr
 	 */
 	static public function ligne_transmissions($voiture){
-		
+		$resultat = '';
+		foreach ($voiture[$nomMarque][$nomModele]['transmission'] as $key => $valeur){
+			$resultat .= self::ligne($key, $valeur);
+		}
+		return $resultat;
 	}
 
 
@@ -189,7 +220,11 @@ class Auto {
 	 * @return string - Le HTML du tr
 	 */
 	static public function ligne_consommation($voiture){
-		
+		$resultat = '';
+		foreach ($voiture[$nomMarque][$nomModele]['consommation'] as $key => $valeur){
+			$resultat .= self::ligne($key, $valeur);
+		}
+		return $resultat;
 	}
 	
 
@@ -202,7 +237,18 @@ class Auto {
 	 * @param string - Le HTML du div "voiture"
 	 */
 	static public function affichageVoiture($voiture, $nomMarque, $nomModele){
-		
+		$resultat = '';
+		$resultat .= '<div class="voiture">';
+		$resultat .= self::image($nomMarque, $nomModele, $class="voiture");
+		$resultat .= '<h2>Prix de base</h2>';
+		$resultat .= '<div class="prix">'.$voiture[$nomMarque][$nomModele].'</div>';
+		$resultat .= '<h2>Caractéristiques</h2>';
+		$resultat .= '<table class="caracteristiques">';
+		$resultat .= '';  
+		$resultat .= '</tr>';
+		$resultat .= '</table>';
+		$resultat .= '</div>';
+
 	}
 	
 
