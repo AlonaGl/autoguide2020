@@ -25,9 +25,10 @@ include_once("../src/donnees.inc.php");
 // var_dump($voitures['Ford']['Fiesta']);
 // var_dump($autos['Ford']['Fiesta']);
 // var_dump($voitures);
+var_dump($voitures['Ford']['Fiesta']['prix']);
 // echo Auto::trouverModele($voitures, 'Ford','Fiesta');
 // echo Auto::listeMarques($voitures);
 // echo Auto::ligne('Moteur :','V8 4,3 litres');
-echo Auto::ligne_puissance($voitures, 'Ford', 'Fiesta');
+// echo Auto::ligne_puissance($voitures, 'Ford', 'Fiesta');
 // ... CONTINUER ...
 ?>

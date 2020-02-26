@@ -17,7 +17,8 @@ Cette page affiche une auto en fonction de la marque et de l'adresse fournis dan
 =========================================================================
 */
 
-
+include_once("../src/Auto.php");
+include_once("../src/donnees.inc.php");
 ?><!DOCTYPE html>
 <html lang="fr">
 
@@ -25,6 +26,7 @@ Cette page affiche une auto en fonction de la marque et de l'adresse fournis dan
 	<meta charset="UTF-8" />
 	<link rel="stylesheet" href="css/autoguide.css" />
 	<!-- /* Faire afficher le titre de la voiture ici (dans un title); */ -->
+	<?php echo Auto::titre(); ?>
 	<title>Ferrari California</title>
 </head>
 
@@ -49,6 +51,7 @@ Cette page affiche une auto en fonction de la marque et de l'adresse fournis dan
 					<h1>Ferrari California</h1>
 				</header>
 				<!-- /* Faire afficher la voiture ici; */ -->
+				<?php echo Auto::affichageVoiture(); ?>
 				<div class="voiture"><img class="voiture" src="images/voitures/ferrari_california.jpg"
 						alt="Ferrari California" title="Ferrari California" />
 					<h2>Prix de base</h2>

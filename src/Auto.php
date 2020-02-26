@@ -168,7 +168,13 @@ class Auto {
 			$resultat .= '</tr>';
 			return $resultat;
 	}
-
+	static public function ligne_moteur($voiture, $nomMarque, $nomModele){
+		$resultat = '';
+		foreach ($voiture[$nomMarque][$nomModele]['moteur'] as $key => $valeur){
+			$resultat .= self::ligne($key, $valeur);
+		}
+		return $resultat;
+	}
 
 	/** Méthode "ligne_puissance" qui retourne la ligne de la puissance (2e ligne) de la voiture
 	 * en lui donnant le format adéquat (voir maquette, page modele.php)
@@ -208,7 +214,11 @@ class Auto {
 	static public function ligne_transmissions($voiture){
 		$resultat = '';
 		foreach ($voiture[$nomMarque][$nomModele]['transmission'] as $key => $valeur){
-			$resultat .= self::ligne($key, $valeur);
+			$resultat .= self::ligne($key);
+			$resultat .= 'ul class="transmissions">';
+			$resultat .= 'li>'.$valeur[0].''.$valeur[1].'</li>';
+			$resultat .= 'li>'.$valeur[2].''.$valeur[3].''.$valeur[4].'</li>';
+			$resultat .= '/ul>';
 		}
 		return $resultat;
 	}
@@ -222,7 +232,11 @@ class Auto {
 	static public function ligne_consommation($voiture){
 		$resultat = '';
 		foreach ($voiture[$nomMarque][$nomModele]['consommation'] as $key => $valeur){
-			$resultat .= self::ligne($key, $valeur);
+			$resultat .= self::ligne($key);
+			$resultat .= 'ul class="$chiffre">';
+			$resultat .= 'li>'.$valeur[0].'</li>';
+			$resultat .= 'li>'.$valeur[1].'</li>';
+			$resultat .= '/ul>';
 		}
 		return $resultat;
 	}
@@ -241,11 +255,16 @@ class Auto {
 		$resultat .= '<div class="voiture">';
 		$resultat .= self::image($nomMarque, $nomModele, $class="voiture");
 		$resultat .= '<h2>Prix de base</h2>';
-		$resultat .= '<div class="prix">'.$voiture[$nomMarque][$nomModele].'</div>';
+		foreach($voiture[$nomMarque][$nomModele]['prix'] as $prix){
+			$resultat .= '<div class="prix">'.$prix.'</div>';
+		}
 		$resultat .= '<h2>Caractéristiques</h2>';
 		$resultat .= '<table class="caracteristiques">';
-		$resultat .= '';  
-		$resultat .= '</tr>';
+		$resultat .= self::ligne_moteur($voiture, $nomMarque, $nomModele);
+		$resultat .= self::ligne_puissance($voiture, $nomMarque, $nomModele);
+		$resultat .= self::ligne_couple($voiture);
+		$resultat .= self::ligne_transmissions($voiture);
+		$resultat .= self::ligne_consommation($voiture);
 		$resultat .= '</table>';
 		$resultat .= '</div>';
 
