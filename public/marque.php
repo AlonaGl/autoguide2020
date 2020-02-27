@@ -15,7 +15,8 @@ Cette page affiche la liste des modèles en fonction de la marque fournie dans l
 - Si la marque ne se trouve pas dans la variable $voitures, on DOIT retourner à la page index.php
 =========================================================================
 */
-
+include_once("../src/Auto.php");
+include_once("../src/donnees.inc.php");
 
 ?>
 <!DOCTYPE html>

@@ -124,11 +124,10 @@ class Auto {
 
 	static public function listeMarques($autos){
 		$resultat = '';
-		$resultat .= '<ul class="listeMarques">';
 		foreach ($autos as $auto) {
-			array_unshift($nomMarque, $autosMarque);
-			$resultat .= '<li><a href="marque.php?nomMarque='.$nomMarque.'">'.$nomMarque.'</a>';
-			$resultat .= self::listeModeles($nomMarque, $autosMarque);
+			$resultat .= '<ul class="listeMarques">';
+			$resultat .= '<li><a href="marque.php?nomMarque='.$auto.'">'.$auto.'</a>';
+			$resultat .= self::listeModeles($auto, $autos);
 		}
 		$resultat .= '</li>';
 		$resultat .= '</ul>';
@@ -144,9 +143,8 @@ class Auto {
 	static public function listeModeles($nomMarque, $autosMarque){
 			$resultat = '';
 			$resultat .= '<ul class="listeModeles">';
-			foreach ($autosMarque[$nomMarque] as $autoMarque) {
-				array_unshift($nomModele);
-				$resultat .= self::lien($nomMarque, $nomModele);
+			foreach ($autosMarque[$nomMarque] as $key) {
+				$resultat .= self::lien($nomMarque, $key);
 			}
 			$resultat .= '</ul>';
 			return $resultat;
@@ -168,6 +166,9 @@ class Auto {
 			$resultat .= '</tr>';
 			return $resultat;
 	}
+
+
+	
 	static public function ligne_moteur($voiture, $nomMarque, $nomModele){
 		$resultat = '';
 		foreach ($voiture[$nomMarque][$nomModele]['moteur'] as $key => $valeur){
@@ -255,9 +256,7 @@ class Auto {
 		$resultat .= '<div class="voiture">';
 		$resultat .= self::image($nomMarque, $nomModele, $class="voiture");
 		$resultat .= '<h2>Prix de base</h2>';
-		foreach($voiture[$nomMarque][$nomModele]['prix'] as $prix){
-			$resultat .= '<div class="prix">'.$prix.'</div>';
-		}
+		$resultat .= '<div class="prix">'.$voiture[$nomMarque][$nomModele]["prix"].'$</div>';
 		$resultat .= '<h2>Caractéristiques</h2>';
 		$resultat .= '<table class="caracteristiques">';
 		$resultat .= self::ligne_moteur($voiture, $nomMarque, $nomModele);
